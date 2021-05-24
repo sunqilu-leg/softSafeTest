@@ -1,0 +1,846 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>软件安全实验报告</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="孙其鲁" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: auto;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline; margin-top: 14px;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<link rel="stylesheet" type="text/css" href="src/readtheorg_theme/css/htmlize.css"/>
+<link rel="stylesheet" type="text/css" href="src/readtheorg_theme/css/readtheorg.css"/>
+<script type="text/javascript" src="src/lib/js/jquery.min.js"></script>
+<script type="text/javascript" src="src/lib/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="src/lib/js/jquery.stickytableheaders.min.js"></script>
+<script type="text/javascript" src="src/readtheorg_theme/js/readtheorg.js"></script>
+<style>pre.src{background:#343131;color:white;} </style>
+<script type="text/javascript">
+// @license magnet:?xt=urn:btih:e95b018ef3580986a04669f1b5879592219e2a7a&dn=public-domain.txt Public Domain
+<!--/*--><![CDATA[/*><!--*/
+     function CodeHighlightOn(elem, id)
+     {
+       var target = document.getElementById(id);
+       if(null != target) {
+         elem.classList.add("code-highlighted");
+         target.classList.add("code-highlighted");
+       }
+     }
+     function CodeHighlightOff(elem, id)
+     {
+       var target = document.getElementById(id);
+       if(null != target) {
+         elem.classList.remove("code-highlighted");
+         target.classList.remove("code-highlighted");
+       }
+     }
+    /*]]>*///-->
+// @license-end
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        displayAlign: "center",
+        displayIndent: "0em",
+
+        "HTML-CSS": { scale: 100,
+                        linebreaks: { automatic: "false" },
+                        webFont: "TeX"
+                       },
+        SVG: {scale: 100,
+              linebreaks: { automatic: "false" },
+              font: "TeX"},
+        NativeMML: {scale: 100},
+        TeX: { equationNumbers: {autoNumber: "AMS"},
+               MultLineWidth: "85%",
+               TagSide: "right",
+               TagIndent: ".8em"
+             }
+});
+</script>
+<script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_HTML"></script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">软件安全实验报告</h1>
+
+<div id="outline-container-orga3b1424" class="outline-2">
+<h2 id="orga3b1424">实验一安装并使用EMACS</h2>
+<div class="outline-text-2" id="text-orga3b1424">
+</div>
+<div id="outline-container-org26abc09" class="outline-3">
+<h3 id="org26abc09">一、实验要求</h3>
+<div class="outline-text-3" id="text-org26abc09">
+<ul class="org-ul">
+<li>在Windows 10 下安装EMACS程序</li>
+<li>安装一个EVIL插件，并切换到evil-mode模式</li>
+<li>熟悉 EMACS 的编辑命令</li>
+<li>在书写实验报告时，附带必要实验屏幕截图</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org2463040" class="outline-3">
+<h3 id="org2463040">二、实验步骤</h3>
+<div class="outline-text-3" id="text-org2463040">
+</div>
+<div id="outline-container-orgad182f7" class="outline-4">
+<h4 id="orgad182f7">1.熟悉基本按键</h4>
+<div class="outline-text-4" id="text-orgad182f7">
+<p>
+<code>C-x</code> 表示 <code>Ctrl+x</code> , <code>M-x</code> 表示 <code>Alt + x</code> ， <code>S-Tab</code> 表示 <code>Shift + Tab</code> ， <code>RET</code> 表示按下 Enter 键。
+</p>
+</div>
+</div>
+<div id="outline-container-org34ef788" class="outline-4">
+<h4 id="org34ef788">2.将按键 <code>Esc</code> 与按键 <code>CapsLock</code> 相互交换</h4>
+<div class="outline-text-4" id="text-org34ef788">
+</div>
+<ul class="org-ul">
+<li><a id="org420363b"></a>1.打开注册表编辑器.<br />
+<div class="outline-text-5" id="text-org420363b">
+
+<div id="org7934e75" class="figure">
+<p><img src="image/1.png" alt="1.png" />
+</p>
+</div>
+</div>
+</li>
+<li><a id="org828f0de"></a>2.找到HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Keyboard Layout,在右边窗口右击，新建-&gt;新建二进制值，选中新建对象，右击修改。将数值名称改为Scancode Map。将数值数据改为hex:00,00,00,00,00,00,00,00,03,00,00,00,3a,00,01,00,01,00,3a,00,00,00,00,00保存即可。<br />
+<div class="outline-text-5" id="text-org828f0de">
+
+<div id="orgc2bd0a9" class="figure">
+<p><img src="image/2.png" alt="2.png" />
+</p>
+</div>
+</div>
+</li>
+</ul>
+</div>
+<div id="outline-container-orgfee510e" class="outline-4">
+<h4 id="orgfee510e">3.修改自定义HOME</h4>
+<div class="outline-text-4" id="text-orgfee510e">
+</div>
+<ul class="org-ul">
+<li><a id="orgbb056f0"></a>1.在 <code>share\emacs\site-lisp</code> 下创建 <code>site-start.el</code> 文件，并写下如下内容<br />
+<div class="outline-text-5" id="text-orgbb056f0">
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(defun set-home-dir (dir)
+(setenv "HOME" dir)
+(message (format "HOME location is %s" (getenv "HOME")))) 
+(set-home-dir "D:/EmacsDocuments")
+</pre>
+</div>
+</div>
+</li>
+<li><a id="org097976b"></a>2.在 <code>E:\EmacsDocuments</code> 下创建 <code>.emacs.d</code> 文件夹，HOME修改成功<br /></li>
+</ul>
+</div>
+<div id="outline-container-orga64df84" class="outline-4">
+<h4 id="orga64df84">4.在Windows 10 安装EMACS基本步骤</h4>
+<div class="outline-text-4" id="text-orga64df84">
+</div>
+<ul class="org-ul">
+<li><a id="org546fadc"></a>1. 到 <a href="http://www.gnu.org/software/emacs/">GNU Emacs</a> 的官网下载 Emacs 软件，选择 <a href="https://www.gnu.org/software/emacs/download.html#nonfree">Windows</a> ，然后选择 <a href="http://ftp.gnu.org/gnu/emacs/windows/">main GNU FTP</a> 。在 FTP 服务器上根据机器是 32 位还是 64 位操作系统选择以 <code>.zip</code> 结尾的软件。<br />
+<div class="outline-text-5" id="text-org546fadc">
+<p>
+<img src="image/3.png" alt="3.png" />
+<img src="image/4.png" alt="4.png" />
+<img src="image/5.png" alt="5.png" />
+<img src="image/6.png" alt="6.png" />
+</p>
+</div>
+</li>
+<li><a id="orgdf04c9d"></a>2. 找到解压缩文件中的 <code>emacs/bin/runemacs.exe</code> 并发送到桌面，更改名称为 <code>emacs</code> ，只有在 <code>runemacs.exe</code> 运行时不会弹出 "命令行窗口" 对话框。<br />
+<div class="outline-text-5" id="text-orgdf04c9d">
+
+<div id="org945ef9b" class="figure">
+<p><img src="image/7.png" alt="7.png" />
+</p>
+</div>
+</div>
+</li>
+<li><a id="org7046d4e"></a>3. 在 <code>D:\Emacs\Documents</code> 下创建 <code>init.el</code> 文件。最基本的操作是连接 MEPLA 插件库，因此学会阅读 <a href="https://melpa.org/#/getting-started">MEPLA</a> 帮助文档的内容。<br />
+<div class="outline-text-5" id="text-org7046d4e">
+
+<div id="orgee24153" class="figure">
+<p><img src="image/8.png" alt="8.png" />
+</p>
+</div>
+<ul class="org-ul">
+<li><p>
+打开 MEPLA 初学者必须查看的 <a href="https://melpa.org/#/getting-started">START</a> 页面。将以下内容复制粘贴到 <code>init.el</code> 文件中。
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">:(require 'package)
+;; 此为 MEPLA 官方插件服务器地址，如果国内访问速度慢也可访问清华大学的MEPLA服务器镜像地址
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+(package-initialize)
+</pre>
+</div></li>
+</ul>
+
+<div id="org209a590" class="figure">
+<p><img src="image/9.png" alt="9.png" />
+</p>
+</div>
+<ul class="org-ul">
+<li>运行 <code>M-x package-refresh-contents</code> 刷新插件服务器内容；运行 <code>M-x package-install RET</code> 后输入 <code>M-x evil-org</code> 安装此插件。
+<img src="image/10.png" alt="10.png" />
+<img src="image/11.png" alt="11.png" />
+<img src="image/12.png" alt="12.png" /></li>
+<li>以上述方法安装 <code>which-key</code> 插件，该插件安装成功后， 当输入 <code>M-x package</code> 时会看到 EMACS 能弹出 POPWINDOWS 提示窗口，非常方便。</li>
+</ul>
+</div>
+</li>
+
+<li><a id="org01f016c"></a>4. 切换到 EVIL-MODE 模式。输入命令 <code>M-x evil-mode</code> 切换到 EVIL 模式，此时将会以 VIM 的按键方式移动鼠标。测试在 NORMAL 模式下，按下 <code>hjkl</code> 键鼠标是否上下移动。<br />
+<div class="outline-text-5" id="text-org01f016c">
+
+<div id="org7558191" class="figure">
+<p><img src="image/13.png" alt="13.png" />
+</p>
+</div>
+</div>
+</li>
+</ul>
+</div>
+<div id="outline-container-org578aa85" class="outline-4">
+<h4 id="org578aa85">5.填写EMACS按键命令</h4>
+<div class="outline-text-4" id="text-org578aa85">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<caption class="t-above"><span class="table-number">Table 1:</span> 基本操作</caption>
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">操作</th>
+<th scope="col" class="org-left">按键</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">Undo</td>
+<td class="org-left"><b>C-_</b></td>
+</tr>
+
+<tr>
+<td class="org-left">Redo</td>
+<td class="org-left"><b>C-g</b></td>
+</tr>
+
+<tr>
+<td class="org-left">Find file</td>
+<td class="org-left"><b>C-x C-f</b></td>
+</tr>
+
+<tr>
+<td class="org-left">Save file</td>
+<td class="org-left"><b>C-x C-s</b></td>
+</tr>
+
+<tr>
+<td class="org-left">Kill buffer</td>
+<td class="org-left"><b>C-x C-k</b></td>
+</tr>
+
+<tr>
+<td class="org-left">Quit Emacs</td>
+<td class="org-left"><b>C-x C-c</b></td>
+</tr>
+
+<tr>
+<td class="org-left">Word Command</td>
+<td class="org-left"><b>M-x</b></td>
+</tr>
+</tbody>
+</table>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<caption class="t-above"><span class="table-number">Table 2:</span> Org-mode basic command</caption>
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">Operation</th>
+<th scope="col" class="org-left">Key</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">local cycle display headline hierarchy</td>
+<td class="org-left"><b>Tab</b></td>
+</tr>
+
+<tr>
+<td class="org-left">Global cycle display headline hierarchy</td>
+<td class="org-left"><b>C-u Tab</b></td>
+</tr>
+
+<tr>
+<td class="org-left">Increase level</td>
+<td class="org-left"><b>M-left</b></td>
+</tr>
+
+<tr>
+<td class="org-left">Decrease level</td>
+<td class="org-left"><b>M-right</b></td>
+</tr>
+
+<tr>
+<td class="org-left">Move up within level</td>
+<td class="org-left"><b>M-up</b></td>
+</tr>
+
+<tr>
+<td class="org-left">Move down within level</td>
+<td class="org-left"><b>M-down</b></td>
+</tr>
+
+<tr>
+<td class="org-left">Move a headline under another top headline</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div id="outline-container-org28217bf" class="outline-4">
+<h4 id="org28217bf">4. 回答下列问题，并在实验中验证</h4>
+<div class="outline-text-4" id="text-org28217bf">
+<ul class="org-ul">
+<li>[N]: <code>Normal Mode</code> [I]: <code>Insert Mode</code> [V]: <code>Visual Mode</code> [C]: <code>Command Mode</code></li>
+</ul>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<caption class="t-above"><span class="table-number">Table 3:</span> VIM Basic Question</caption>
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">Question</th>
+<th scope="col" class="org-left">Answer (Tips)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">switch <code>Normal Mode</code> between <code>Visual Mode</code></td>
+<td class="org-left">Esc / v</td>
+</tr>
+
+<tr>
+<td class="org-left">switch <code>Normal Mode</code> between <code>Insert Mode</code></td>
+<td class="org-left">Esc / i</td>
+</tr>
+
+<tr>
+<td class="org-left">which key delete a character [ab <span class="underline">c</span> de]?</td>
+<td class="org-left">[N]x</td>
+</tr>
+
+<tr>
+<td class="org-left">repeate delete 10 character [ab <span class="underline">cccccccccc</span> de]</td>
+<td class="org-left">[N]10x</td>
+</tr>
+
+<tr>
+<td class="org-left">delete current line</td>
+<td class="org-left">[N]dd</td>
+</tr>
+
+<tr>
+<td class="org-left">delete line from <span class="underline">t</span> his point</td>
+<td class="org-left">[N]D</td>
+</tr>
+
+<tr>
+<td class="org-left">Undo</td>
+<td class="org-left">[N]u</td>
+</tr>
+
+<tr>
+<td class="org-left">Redo</td>
+<td class="org-left">[N]C-r</td>
+</tr>
+
+<tr>
+<td class="org-left">move to end of a line</td>
+<td class="org-left">[N]$</td>
+</tr>
+
+<tr>
+<td class="org-left">move to begin of a line</td>
+<td class="org-left">[N]0</td>
+</tr>
+
+<tr>
+<td class="org-left">move to start of a file</td>
+<td class="org-left">[N]gg</td>
+</tr>
+
+<tr>
+<td class="org-left">move to end of a file</td>
+<td class="org-left">[N]G</td>
+</tr>
+
+<tr>
+<td class="org-left">search in current buffer</td>
+<td class="org-left">[N]/</td>
+</tr>
+
+<tr>
+<td class="org-left">search next / forward</td>
+<td class="org-left">[N]n/N</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org1d520c9" class="outline-2">
+<h2 id="org1d520c9">实验二 用 EMACS 的 ORGMODE 编写 WINDBG 实验文档</h2>
+<div class="outline-text-2" id="text-org1d520c9">
+</div>
+<div id="outline-container-orga15c0a6" class="outline-3">
+<h3 id="orga15c0a6">一、实验要求</h3>
+<div class="outline-text-3" id="text-orga15c0a6">
+<ul class="org-ul">
+<li>熟悉 ORGMODE 语法</li>
+<li>ORGMODE 插入图片、表格、超级链接的方式</li>
+<li>使用第三方插件导出带有 CSS 样式的 html 文件</li>
+<li>选做: 将您创建的文档放到 github 上保存并使用 git 命令提交</li>
+<li>选做：将放到 github 上生成的 html 文件发布出来，测试是否能远程浏览</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgf4d8d41" class="outline-3">
+<h3 id="orgf4d8d41">二、实验要点</h3>
+<div class="outline-text-3" id="text-orgf4d8d41">
+</div>
+<div id="outline-container-orgcbd8ef8" class="outline-4">
+<h4 id="orgcbd8ef8">1. 在 ORG 文档中输入以下内容观察 HEADLINE 结构</h4>
+<div class="outline-text-4" id="text-orgcbd8ef8">
+<pre class="example">
+** Second level
+*** Third level
+   some text
+*** Third level
+   more text
+</pre>
+
+
+<div id="org89412f2" class="figure">
+<p><img src="image/14.png" alt="14.png" />
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-org7068ffb" class="outline-4">
+<h4 id="org7068ffb">2. 回答以下问题</h4>
+<div class="outline-text-4" id="text-org7068ffb">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<caption class="t-above"><span class="table-number">Table 4:</span> Table</caption>
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">Question</th>
+<th scope="col" class="org-left">Command(Tips)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">Create a table in org-mode</td>
+<td class="org-left">Input <code>¦ contents ¦ RET</code></td>
+</tr>
+
+<tr>
+<td class="org-left">re-align the table without moving the cursor</td>
+<td class="org-left"><code>C-c C-c</code></td>
+</tr>
+
+<tr>
+<td class="org-left">re-align the table, move to next field</td>
+<td class="org-left"><code>TAB</code></td>
+</tr>
+
+<tr>
+<td class="org-left">move to previous field</td>
+<td class="org-left"><code>S-TAB</code></td>
+</tr>
+
+<tr>
+<td class="org-left">re-align the table, move to next row</td>
+<td class="org-left"><code>RET</code></td>
+</tr>
+
+<tr>
+<td class="org-left">move to beginning/end of field</td>
+<td class="org-left"><code>M-a/e</code></td>
+</tr>
+
+<tr>
+<td class="org-left">move the current column left</td>
+<td class="org-left"><code>M-→/←</code></td>
+</tr>
+
+<tr>
+<td class="org-left">kill the current column</td>
+<td class="org-left"><code>M-S- ←</code></td>
+</tr>
+
+<tr>
+<td class="org-left">insert new column to left of cursor position</td>
+<td class="org-left"><code>M-S- →</code></td>
+</tr>
+
+<tr>
+<td class="org-left">move the current row up/down</td>
+<td class="org-left"><code>M-↑/↓</code></td>
+</tr>
+
+<tr>
+<td class="org-left">kill the current row or horizontal line</td>
+<td class="org-left"><code>M-S-↑</code></td>
+</tr>
+
+<tr>
+<td class="org-left">insert new row above the current row</td>
+<td class="org-left"><code>M-S-↓</code></td>
+</tr>
+
+<tr>
+<td class="org-left">insert hline below (C-u : above) current row</td>
+<td class="org-left"><code>C-c -</code></td>
+</tr>
+
+<tr>
+<td class="org-left">insert hline and move to line below it</td>
+<td class="org-left"><code>C-c RET</code></td>
+</tr>
+
+<tr>
+<td class="org-left">sort lines in region</td>
+<td class="org-left"><code>C-c ^</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div id="outline-container-orgeb1d775" class="outline-4">
+<h4 id="orgeb1d775">3. 插入图片和超级链接</h4>
+<div class="outline-text-4" id="text-orgeb1d775">
+<p>
+<a href="image/15.png">这是图片名称，点击此链接在新窗口打开图片</a>
+</p>
+
+<p>
+这是到<a href="https://www.baidu.com">百度</a>的链接
+</p>
+
+
+<div id="org7d106da" class="figure">
+<p><img src="image/15.png" alt="15.png" />
+</p>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-orga12b465" class="outline-4">
+<h4 id="orga12b465">4. 用 EMACS 的 ORGMODE 编写 WINDBG 实验文档</h4>
+<div class="outline-text-4" id="text-orga12b465">
+</div>
+<ul class="org-ul">
+<li><a id="orgb182bef"></a>a)实验题目：<br />
+<div class="outline-text-5" id="text-orgb182bef">
+<p>
+利用windbg进行虚实地址转换
+</p>
+</div>
+</li>
+<li><a id="orga31484a"></a>b)实验目的：<br />
+<div class="outline-text-5" id="text-orga31484a">
+<p>
+利用windbg对内核进行调试，实现虚拟地址向物理地址的转换
+</p>
+</div>
+</li>
+<li><a id="org6403313"></a>c)实验环境：<br />
+<div class="outline-text-5" id="text-org6403313">
+<p>
+Windows10；虚拟机Windows7；WinDbg；
+</p>
+</div>
+</li>
+<li><a id="org2ac8f6b"></a>d)实验内容：<br />
+<div class="outline-text-5" id="text-org2ac8f6b">
+<p>
+在配置主机（windows10）下配置WinDbg连接虚拟机中Windows7，进而进行内核调试。
+</p>
+</div>
+</li>
+<li><a id="org71c3efd"></a>e)实验步骤：<br />
+<div class="outline-text-5" id="text-org71c3efd">
+<ul class="org-ul">
+<li>1.首先在虚拟机中创建一个文档，里面输入“hello!lge”
+<img src="image/16.png" alt="16.png" /></li>
+<li>2.使用windbg连接虚拟机进行内核调试，查找notepad.exe进程，可以看到进程块起始地址
+<img src="image/17.png" alt="17.png" /></li>
+<li>3.使用下面命令，然后再输入g命令将Windbg当前调试进程切换到notepad.exe
+<img src="image/18.png" alt="18.png" /></li>
+
+<li>4.可以看到cr3的内容已经发生改变
+<img src="image/19.png" alt="19.png" /></li>
+<li>5.查找notepad中字符串所在的虚拟地址位置
+<img src="image/20.png" alt="20.png" /></li>
+<li>6.测试是否正确，发现是自己写进去的字符串。
+<img src="image/21.png" alt="21.png" /></li>
+<li>7.将虚拟地址的十六进制转换为2进制
+<img src="image/22.png" alt="22.png" /></li>
+<li>8.可以发现：</li>
+</ul>
+<p class="verse">
+PML4E索引：0000 0000=x0<br />
+PDPTE索引：0000 0000=0x0<br />
+PDE索引：0011 0011 = 0x19<br />
+PTE索引：11010 0001 = 0x1a1<br />
+页内偏移：1000 1100 1000 = 0x8c8<br />
+</p>
+<ul class="org-ul">
+<li>9.目标进程的DirBase为0xb19b000, PML4E索引为0，所以目的地址为：0xb19b000.
+<img src="image/23.png" alt="23.png" /></li>
+<li>10.因为PDPTE索引为0，所以目的地址为0xb180b000
+<img src="image/24.png" alt="24.png" /></li>
+<li>11.PDE索引为0x19，所以要加上，目的地址为：0x8e12000+0x19*8
+<img src="image/25.png" alt="25.png" /></li>
+<li>12.PTE索引为0x1a1，所以要加上0x1a1*8，目的地址为：0xb36b0000+0x1a1*8
+<img src="image/26.png" alt="26.png" /></li>
+<li>13.页内偏移为0x8c8，索引在0xb3e4d000的基础上加上偏移值就是目的地址。可以看到我们在程序中输入的字符串。
+<img src="image/27.png" alt="27.png" /></li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div id="outline-container-org3fa9b9f" class="outline-4">
+<h4 id="org3fa9b9f">5. 选做：将导出的 html 文档发布到 github 上</h4>
+<div class="outline-text-4" id="text-org3fa9b9f">
+</div>
+<ul class="org-ul">
+<li><a id="org2de6288"></a>a) 将文档保存到 github<br /></li>
+<li><a id="orgb0e9128"></a>b) 将导出的 html 进行发布<br /></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: 孙其鲁</p>
+<p class="validation"><a href="https://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>

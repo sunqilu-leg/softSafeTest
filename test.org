@@ -1,0 +1,207 @@
+
+#+Html_HEAD: <link rel="stylesheet" type="text/css" href="src/readtheorg_theme/css/htmlize.css"/>
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="src/readtheorg_theme/css/readtheorg.css"/>
+
+#+HTML_HEAD: <script type="text/javascript" src="src/lib/js/jquery.min.js"></script>
+#+HTML_HEAD: <script type="text/javascript" src="src/lib/js/bootstrap.min.js"></script>
+#+HTML_HEAD: <script type="text/javascript" src="src/lib/js/jquery.stickytableheaders.min.js"></script>
+#+HTML_HEAD: <script type="text/javascript" src="src/readtheorg_theme/js/readtheorg.js"></script>
+
+#+HTML_HEAD: <style>pre.src{background:#343131;color:white;} </style>
+
+# no default toc at all
+#+OPTIONS: p:2
+
+# only number at level 2
+#+OPTIONS: H:3 ^:nil num:nil toc:nil timestamp:nil
+
+
+#+TITLE:软件安全实验报告
+#+AUTHOR:孙其鲁
+
+* 实验一安装并使用EMACS
+** 一、实验要求
++ 在Windows 10 下安装EMACS程序
++ 安装一个EVIL插件，并切换到evil-mode模式
++ 熟悉 EMACS 的编辑命令
++ 在书写实验报告时，附带必要实验屏幕截图
+** 二、实验步骤
+*** 1.熟悉基本按键
+     ~C-x~ 表示 ~Ctrl+x~ , ~M-x~ 表示 ~Alt + x~ ， ~S-Tab~ 表示 ~Shift + Tab~ ， ~RET~ 表示按下 Enter 键。
+*** 2.将按键 ~Esc~ 与按键 ~CapsLock~ 相互交换
+**** 1.打开注册表编辑器.
+    file:image/1.png
+**** 2.找到HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Keyboard Layout,在右边窗口右击，新建->新建二进制值，选中新建对象，右击修改。将数值名称改为Scancode Map。将数值数据改为hex:00,00,00,00,00,00,00,00,03,00,00,00,3a,00,01,00,01,00,3a,00,00,00,00,00保存即可。
+    file:image/2.png
+*** 3.修改自定义HOME
+**** 1.在 ~share\emacs\site-lisp~ 下创建 ~site-start.el~ 文件，并写下如下内容
+     #+ATTR_HTML: :width 100
+     #+begin_src emacs-lisp
+(defun set-home-dir (dir)
+(setenv "HOME" dir)
+(message (format "HOME location is %s" (getenv "HOME")))) 
+(set-home-dir "D:/EmacsDocuments")
+     #+end_src
+**** 2.在 ~E:\EmacsDocuments~ 下创建 ~.emacs.d~ 文件夹，HOME修改成功
+*** 4.在Windows 10 安装EMACS基本步骤
+**** 1. 到 [[http://www.gnu.org/software/emacs/][GNU Emacs]] 的官网下载 Emacs 软件，选择 [[https://www.gnu.org/software/emacs/download.html#nonfree][Windows]] ，然后选择 [[http://ftp.gnu.org/gnu/emacs/windows/][main GNU FTP]] 。在 FTP 服务器上根据机器是 32 位还是 64 位操作系统选择以 ~.zip~ 结尾的软件。
+     [[file:image/3.png]]
+     file:image/4.png
+     file:image/5.png
+     file:image/6.png
+**** 2. 找到解压缩文件中的 ~emacs/bin/runemacs.exe~ 并发送到桌面，更改名称为 ~emacs~ ，只有在 ~runemacs.exe~ 运行时不会弹出 "命令行窗口" 对话框。
+     file:image/7.png
+**** 3. 在 ~D:\Emacs\Documents~ 下创建 ~init.el~ 文件。最基本的操作是连接 MEPLA 插件库，因此学会阅读 [[https://melpa.org/#/getting-started][MEPLA]] 帮助文档的内容。
+     file:image/8.png
+     - 打开 MEPLA 初学者必须查看的 [[https://melpa.org/#/getting-started][START]] 页面。将以下内容复制粘贴到 ~init.el~ 文件中。
+        #+ATTR_HTML: :width 100
+        #+begin_src emacs-lisp
+:(require 'package)
+;; 此为 MEPLA 官方插件服务器地址，如果国内访问速度慢也可访问清华大学的MEPLA服务器镜像地址
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+(package-initialize)
+        #+end_src
+     file:image/9.png
+      -	运行 ~M-x package-refresh-contents~ 刷新插件服务器内容；运行 ~M-x package-install RET~ 后输入 ~M-x evil-org~ 安装此插件。
+	file:image/10.png
+	file:image/11.png
+	file:image/12.png
+      - 以上述方法安装 ~which-key~ 插件，该插件安装成功后， 当输入 ~M-x package~ 时会看到 EMACS 能弹出 POPWINDOWS 提示窗口，非常方便。
+	
+**** 4. 切换到 EVIL-MODE 模式。输入命令 ~M-x evil-mode~ 切换到 EVIL 模式，此时将会以 VIM 的按键方式移动鼠标。测试在 NORMAL 模式下，按下 ~hjkl~ 键鼠标是否上下移动。
+     file:image/13.png
+*** 5.填写EMACS按键命令
+#+CAPTION:基本操作
+|操作|按键|
+|--------+-----|
+| Undo         | *C-_* |
+| Redo         | *C-g* |
+| Find file    | *C-x C-f* |
+| Save file    | *C-x C-s* |
+| Kill buffer  | *C-x C-k* |
+| Quit Emacs   | *C-x C-c* |
+| Word Command | *M-x* |
+
+#+CAPTION: Org-mode basic command
+| Operation                                  | Key   |
+|--------------------------------------------+-------|
+| local cycle display headline hierarchy     | *Tab* |
+| Global cycle display headline hierarchy    | *C-u Tab* |
+| Increase level                             |  *M-left* |
+| Decrease level                             |  *M-right* |
+| Move up within level                       |  *M-up* |
+| Move down within level                     |  *M-down* |
+| Move a headline under another top headline |       |
+
+*** 4. 回答下列问题，并在实验中验证
+
+   + [N]: ~Normal Mode~ [I]: ~Insert Mode~ [V]: ~Visual Mode~ [C]: ~Command Mode~
+
+   #+CAPTION: VIM Basic Question
+   | Question                                         | Answer (Tips) |
+   |--------------------------------------------------+---------------|
+   | switch ~Normal Mode~ between ~Visual Mode~       | Esc / v       |
+   | switch ~Normal Mode~ between ~Insert Mode~       | Esc / i       |
+   | which key delete a character [ab _c_ de]?        | [N]x          |
+   | repeate delete 10 character [ab _cccccccccc_ de] | [N]10x        |
+   | delete current line                              | [N]dd         |
+   | delete line from _t_ his point                   | [N]D          |
+   | Undo                                             | [N]u          |
+   | Redo                                             | [N]C-r        |
+   | move to end of a line                            | [N]$          |
+   | move to begin of a line                          | [N]0          |
+   | move to start of a file                          | [N]gg         |
+   | move to end of a file                            | [N]G          |
+   | search in current buffer                         | [N]/          |
+   | search next / forward                            | [N]n/N        |
+
+* 实验二 用 EMACS 的 ORGMODE 编写 WINDBG 实验文档
+** 一、实验要求
++ 熟悉 ORGMODE 语法
++ ORGMODE 插入图片、表格、超级链接的方式
++ 使用第三方插件导出带有 CSS 样式的 html 文件
++ 选做: 将您创建的文档放到 github 上保存并使用 git 命令提交
++ 选做：将放到 github 上生成的 html 文件发布出来，测试是否能远程浏览
+** 二、实验要点
+*** 1. 在 ORG 文档中输入以下内容观察 HEADLINE 结构
+: ** Second level
+: *** Third level
+:    some text
+: *** Third level
+:    more text
+file:image/14.png
+*** 2. 回答以下问题
+
+#+CAPTION: Table
+| Question                                     | Command(Tips)            |
+|----------------------------------------------+--------------------------|
+| Create a table in org-mode                   | Input ~¦ contents ¦ RET~ |
+| re-align the table without moving the cursor | ~C-c C-c~                |
+| re-align the table, move to next field       | ~TAB~                    |
+| move to previous field                       | ~S-TAB~                  |
+| re-align the table, move to next row         | ~RET~                    |
+| move to beginning/end of field               | ~M-a/e~                  |
+| move the current column left                 | ~M-→/←~                  |
+| kill the current column                      | ~M-S- ←~                 |
+| insert new column to left of cursor position | ~M-S- →~                 |
+| move the current row up/down                 | ~M-↑/↓~                  |
+| kill the current row or horizontal line      | ~M-S-↑~                  |
+| insert new row above the current row         | ~M-S-↓~                  |
+| insert hline below (C-u : above) current row | ~C-c -~                  |
+| insert hline and move to line below it       | ~C-c RET~                |
+| sort lines in region                         | ~C-c ^~                  |
+
+*** 3. 插入图片和超级链接
+[[file:image/15.png][这是图片名称，点击此链接在新窗口打开图片]]
+
+这是到[[https://www.baidu.com][百度]]的链接
+
+file:image/15.png
+
+
+*** 4. 用 EMACS 的 ORGMODE 编写 WINDBG 实验文档
+**** a)实验题目：
+     利用windbg进行虚实地址转换
+**** b)实验目的：
+     利用windbg对内核进行调试，实现虚拟地址向物理地址的转换
+**** c)实验环境：
+     Windows10；虚拟机Windows7；WinDbg；
+**** d)实验内容：
+     在配置主机（windows10）下配置WinDbg连接虚拟机中Windows7，进而进行内核调试。
+**** e)实验步骤：
+     - 1.首先在虚拟机中创建一个文档，里面输入“hello!lge”
+       file:image/16.png
+     - 2.使用windbg连接虚拟机进行内核调试，查找notepad.exe进程，可以看到进程块起始地址
+       file:image/17.png
+     - 3.使用下面命令，然后再输入g命令将Windbg当前调试进程切换到notepad.exe
+       file:image/18.png
+       
+     - 4.可以看到cr3的内容已经发生改变
+       file:image/19.png
+     - 5.查找notepad中字符串所在的虚拟地址位置
+       file:image/20.png
+     - 6.测试是否正确，发现是自己写进去的字符串。
+       file:image/21.png
+     - 7.将虚拟地址的十六进制转换为2进制
+       file:image/22.png
+     - 8.可以发现：
+#+BEGIN_VERSE       
+       PML4E索引：0000 0000=x0
+       PDPTE索引：0000 0000=0x0
+       PDE索引：0011 0011 = 0x19
+       PTE索引：11010 0001 = 0x1a1
+       页内偏移：1000 1100 1000 = 0x8c8
+#+END_VERSE
+     - 9.目标进程的DirBase为0xb19b000, PML4E索引为0，所以目的地址为：0xb19b000.
+       file:image/23.png
+     - 10.因为PDPTE索引为0，所以目的地址为0xb180b000
+       file:image/24.png
+     - 11.PDE索引为0x19，所以要加上，目的地址为：0x8e12000+0x19*8
+       file:image/25.png
+     - 12.PTE索引为0x1a1，所以要加上0x1a1*8，目的地址为：0xb36b0000+0x1a1*8
+       file:image/26.png
+     - 13.页内偏移为0x8c8，索引在0xb3e4d000的基础上加上偏移值就是目的地址。可以看到我们在程序中输入的字符串。
+       file:image/27.png
+*** 5. 选做：将导出的 html 文档发布到 github 上
+**** a) 将文档保存到 github
+**** b) 将导出的 html 进行发布
